@@ -1,0 +1,31 @@
+dcs: "etcd3"
+#dcs_server_ips:
+#  - 10.0.0.1
+#  - 10.0.0.2
+dcs_port:
+  etcd3:     2379
+postgresql_cluster_name: "main"
+postgresql_major_version: "15"
+postgresql_port: "5432"
+# PostgreSQL base directory. If not set, @DATADIR_BASE@ is used, which is
+# evaluated by pg_createconfig_patroni to either the default
+# (/var/lib/postgresql) or what the data_directory variable (without %v/%c) in
+# /etc/postgresql-common/createcluster.conf is set to.
+#postgresql_data_dir_base: "/var/lib/postgresql"
+patroni_replication_user: "replicator"
+patroni_replication_pass: "replicator"
+# Password for the postgres superuser. Usually setting a password is
+# discouraged, and socket-based peer authentication to the local postgres
+# instance should be used instead. However, patroni_postgres_pass needs to be
+# set on PostgresSQL 10 and earlier if pg_rewind is to be used to get diverged
+# former primaries back online without a full re-clone.
+patroni_postgres_pass: ""
+# from Postgresql 11, pg_rewind can use a regular user with the appropriate
+# fine-grained permissions. If set, Patroni will setup the user and its
+# permissions. Note: "pg_rewind" is a reserved role and cannot be used.
+patroni_rewind_user: "postgres_rewind"
+patroni_rewind_pass: "postgres_rewind"
+# The Patroni REST port
+patroni_port: 8008
+# vip-manager will manage the vip on each node if set
+#vip: "10.0.1.1"

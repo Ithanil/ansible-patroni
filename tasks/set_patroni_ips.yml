@@ -1,4 +1,0 @@
-- set_fact:
-    patroni_ips: "{{ patroni_ips | default([])+ [hostvars[item]['ansible_eth0']['ipv4']['address']] }}"
-  with_items: "{{ groups['patroni_hosts'] }}"
-  when: patroni_ips is not defined

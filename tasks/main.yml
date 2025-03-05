@@ -1,4 +1,26 @@
+# Check that we don't accidentally affect a running system
+- name: Getting postgres process IDs
+  ansible.builtin.pids:
+      name: postgres
+  register: pids_of_postgres
+
+- name: Determine if no postgres runs on any host
+  ansible.builtin.set_fact:
+    skip_patroni_setup: true
+  when: hostvars[item]['pids_of_postgres'].stdout|default([])|length>0
+  loop: "{{ patroni_hosts }}"
+
+- name: Print reason for stop
+  ansible.builtin.debug:
+    msg: "Stopping, because running postgres processes were found. If this is expected, please stop postgres on all hosts!"
+  when: skip_patroni_setup|default(false)
+
+# Execute setup if no running postgres found
 - include_tasks: set_patroni_ips.yml
+  when: not skip_patroni_setup|default(false)
 - include_tasks: dcs.yml
+  when: not skip_patroni_setup|default(false)
 - include_tasks: postgresql.yml
+  when: not skip_patroni_setup|default(false)
 - include_tasks: patroni.yml
+  when: not skip_patroni_setup|default(false)

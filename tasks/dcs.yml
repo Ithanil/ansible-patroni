@@ -18,19 +18,19 @@
 - name: Listen for other cluster peers
   lineinfile:
     dest: "/etc/default/etcd"
-    line: "ETCD_LISTEN_PEER_URLS=\"http://{{ hostvars[ansible_hostname]['ansible_eth0']['ipv4']['address'] }}:2380\""
+    line: "ETCD_LISTEN_PEER_URLS=\"http://{{ hostvars[ansible_hostname]['patroni_main_ip'] }}:2380\""
     regexp: ".*ETCD_LISTEN_PEER_URLS.*"
 
 - name: Setup advertised peer communication URL
   lineinfile:
     dest: "/etc/default/etcd"
-    line: "ETCD_INITIAL_ADVERTISE_PEER_URLS=\"http://{{ hostvars[ansible_hostname]['ansible_eth0']['ipv4']['address'] }}:2380\""
+    line: "ETCD_INITIAL_ADVERTISE_PEER_URLS=\"http://{{ hostvars[ansible_hostname]['patroni_main_ip'] }}:2380\""
     regexp: ".*ETCD_INITIAL_ADVERTISE_PEER_URLS.*"
 
 - name: Enable client listen interface
   lineinfile:
     dest: "/etc/default/etcd"
-    line: "ETCD_LISTEN_CLIENT_URLS=\"http://localhost:2379,http://{{ hostvars[ansible_hostname]['ansible_eth0']['ipv4']['address'] }}:2379\""
+    line: "ETCD_LISTEN_CLIENT_URLS=\"http://localhost:2379,http://{{ hostvars[ansible_hostname]['patroni_main_ip'] }}:2379\""
     regexp: ".*ETCD_LISTEN_CLIENT_URLS.*"
 
 - name: Advertise client interface
@@ -42,7 +42,7 @@
 - name: Setup URLs of initials members
   lineinfile:
     dest: "/etc/default/etcd"
-    line: "ETCD_INITIAL_CLUSTER=\"{% for host in groups['patroni_hosts'] %}{{ host }}=http://{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}:2380{% if not loop.last %},{% endif %}{% endfor %}\""
+    line: "ETCD_INITIAL_CLUSTER=\"{% for host in groups['patroni_hosts'] %}{{ host }}=http://{{ hostvars[host]['patroni_main_ip'] }}:2380{% if not loop.last %},{% endif %}{% endfor %}\""
     regexp: ".*ETCD_INITIAL_CLUSTER.*"
 
 - name: Enable V2 API

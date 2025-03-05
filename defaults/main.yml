@@ -1,13 +1,13 @@
 dcs: "{% if ansible_distribution_release == "bookworm" %}etcd{% else %}etcd3{% endif %}"
 dcs_port: 2379
-postgresql_cluster_name: "main"
-postgresql_major_version: "15"
-postgresql_port: "5432"
+psql_cluster_name: "main"
+psql_major_version: "15"
+psql_port: "5432"
 # PostgreSQL base directory. If not set, @DATADIR_BASE@ is used, which is
 # evaluated by pg_createconfig_patroni to either the default
 # (/var/lib/postgresql) or what the data_directory variable (without %v/%c) in
 # /etc/postgresql-common/createcluster.conf is set to.
-#postgresql_data_dir_base: "/var/lib/postgresql"
+#psql_data_dir_base: "/var/lib/postgresql"
 patroni_replication_user: "replicator"
 patroni_replication_pass: "replicator"
 # from Postgresql 11, pg_rewind can use a regular user with the appropriate
@@ -19,8 +19,8 @@ patroni_rewind_pass: "postgres_rewind"
 patroni_port: 8008
 
 # *At least* these variables need to be set in your inventory!
-patroni_hosts:
-# - "hostname1"
-# - "hostname2"
+#patroni_hosts:
+# - "inventory_name1"
+# - "inventory_name2"
 #...
-patroni_vip: # "10.0.0.1"
+#patroni_vip: # "10.0.0.1"

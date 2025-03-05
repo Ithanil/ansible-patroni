@@ -1,0 +1,48 @@
+- name: Check if potentially vaulted patroni_replication_pass can be accessed...
+  block:
+  - name: Check if potentially vaulted patroni_replication_pass can be accessed...
+    ansible.builtin.set_fact:
+      patroni_replication_pass: "{{ patroni_replication_pass }}"
+  rescue:
+  - name: Couldn't access patroni_replication_pass, check if you failed to provide a correct vault password.
+    ansible.builtin.meta: end_play
+  when: patroni_replication_pass is defined
+
+- name: Check if potentially vaulted patroni_rewind_pass can be accessed...
+  block:
+  - name: Check if potentially vaulted patroni_rewind_pass can be accessed...
+    ansible.builtin.set_fact:
+      patroni_rewind_pass: "{{ patroni_rewind_pass }}"
+  rescue:
+  - name: Couldn't access patroni_rewind_pass, check if you failed to provide a correct vault password.
+    ansible.builtin.meta: end_play
+  when: patroni_rewind_pass is defined
+
+- name: Determine and store main IPv4 address
+  ansible.builtin.set_fact:
+    patroni_main_ip: "{{ main_ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+
+- name: Store array of Patroni main IPv4 addresses
+  ansible.builtin.set_fact:
+    patroni_ips: "{{ patroni_ips | default([])+ [hostvars[item]['patroni_main_ip'] }}"
+  with_items: "{{ groups['patroni_hosts'] }}"
+  when: patroni_ips is not defined
+
+- name: Ensure VIP address is defined
+  fail:
+    msg: "No VIP address is specified! Please define your virtual IP address in patroni_vip."
+  when: patroni_vip is not defined
+
+- name: Ensure at least 3 Patroni hosts are specified
+  fail:
+    msg: "Array of Patroni hosts does not have at least 3 elements! Got: {{ patroni_hosts }}"
+  when: patroni_hosts | length < 3
+
+- name: Store an array of Patroni inventory names (without own name)
+  ansible.builtin.set_fact:
+    other_patroni_hosts: "{{ patroni_hosts | reject('equalto', inventory_hostname) | list }}"
+
+- name: Ensure resulting array has exactly one element less than patroni_hosts
+  fail:
+    msg: "Array of other patroni hosts does not have one element less! Got: {{ other_patroni_hosts }}"
+  when: other_patroni_hosts | length != patroni_hosts | length - 1

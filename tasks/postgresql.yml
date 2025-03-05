@@ -21,8 +21,6 @@
     dest: "/etc/postgresql-common/createcluster.conf"
     line: "create_main_cluster = false"
     regexp: ".*create_main_cluster.*"
-  tags:
-    - config
 
 - name: Install PostgreSQL Server
   package:

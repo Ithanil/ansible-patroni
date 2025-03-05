@@ -1,7 +1,5 @@
 {{ dcs }}:
   hosts:
-{%   for ip in dcs_ips
- %}
+{% for ip in patroni_ips %}
     - {{ ip }}:{{ dcs_port[dcs] }}
-{%
-     endfor %}
+{% endfor %}

@@ -3,15 +3,29 @@
     name: patroni
     state: present
 
+- name: Install etcd client package
+  package:
+    name: python3-etcd
+    state: present
+  when: dcs == "etcd"
+
 - name: Install etcd3 client package
   package:
     name: python3-etcd3
     state: present
+  when: dcs == "etcd3"
 
 - name: Install vip-manager package
   package:
     name: vip-manager
     state: present
+  when: dcs == "etcd"
+
+- name: Install vip-manager2 package
+  package:
+    name: vip-manager2
+    state: present
+  when: dcs == "etcd3"
 
 - name: Deploy patroni DCS config
   template:
@@ -20,8 +34,6 @@
     mode: 0640
     owner: "postgres"
     group: "postgres"
-  tags:
-    - config
 
 - name: Deploy patroni config templates
   template:
@@ -30,13 +42,9 @@
     mode: 0640
     owner: "postgres"
     group: "postgres"
-  tags:
-    - config
 
 - name: Create patroni configuration
-  command: pg_createconfig_patroni --force --hostip={{ ansible_default_ipv4.address }} {% if postgresql_port is defined %}--port={{ postgresql_port }}{% endif %} {% if vip is defined %}--vip={{ vip }} {% if dcs_ips | length > 1 %}--endpoint=http://{{ ansible_default_ipv4.address }}:2379{% endif %}{% endif %} {{ postgresql_major_version }} {{ postgresql_cluster_name }}
-  tags:
-    - config
+  command: pg_createconfig_patroni --force --hostip={{ ansible_default_ipv4.address }} --port={{ postgresql_port }} --vip={{ vip }} --endpoint=http://{{ ansible_default_ipv4.address }}:2379 {{ postgresql_major_version }} {{ postgresql_cluster_name }}
 
 - name: systemctl daemon-reload / start patroni
   systemd:
@@ -44,8 +52,6 @@
     name: patroni@{{ postgresql_major_version }}-{{ postgresql_cluster_name }}
     state: restarted
     enabled: yes
-  tags:
-    - config
 
 - name: systemctl daemon-reload / start vip-manager
   systemd:
@@ -53,5 +59,3 @@
     name: vip-manager@{{ postgresql_major_version }}-{{ postgresql_cluster_name }}
     state: restarted
     enabled: yes
-  tags:
-    - config

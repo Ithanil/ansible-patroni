@@ -1,0 +1,4 @@
+- include_tasks: set_patroni_ips.yml
+- include_tasks: dcs.yml
+- include_tasks: postgresql.yml
+- include_tasks: patroni.yml

@@ -1,5 +1,6 @@
-dcs: "{% if ansible_distribution_release == "bookworm" %}etcd{% else %}etcd3{% endif %}"
-dcs_port: 2379
+dcs: "{% if ansible_distribution_release == 'bookworm' %}etcd{% else %}etcd3{% endif %}"
+etcd_client_port: 2379
+etcd_peer_port: 2380
 psql_cluster_name: "main"
 psql_major_version: "15"
 psql_port: "5432"

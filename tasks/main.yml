@@ -1,6 +1,11 @@
 # Check that we don't accidentally affect a running system
+- name: Install required python3-psutil package for checking PIDs
+  package:
+    name: python3-psutil
+    state: present
+
 - name: Getting postgres process IDs
-  ansible.builtin.pids:
+  community.general.pids:
       name: postgres
   register: pids_of_postgres
 
@@ -16,7 +21,7 @@
   when: skip_patroni_setup|default(false)
 
 # Execute setup if no running postgres found
-- include_tasks: set_patroni_ips.yml
+- include_tasks: preflight.yml
   when: not skip_patroni_setup|default(false)
 - include_tasks: dcs.yml
   when: not skip_patroni_setup|default(false)

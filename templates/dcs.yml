@@ -1,5 +1,5 @@
 {{ dcs }}:
   hosts:
 {% for ip in patroni_ips %}
-    - {{ ip }}:{{ dcs_port[dcs] }}
+    - {{ ip }}:{{ etcd_client_port }}
 {% endfor %}

@@ -44,7 +44,7 @@
     group: "postgres"
 
 - name: Create patroni configuration
-  command: pg_createconfig_patroni --force --hostip={{ patroni_main_ip }} --port={{ psql_port }} --vip={{ vip }} --endpoint=http://{{ patroni_main_ip }}:2379 {{ psql_major_version }} {{ psql_cluster_name }}
+  command: pg_createconfig_patroni --force --hostip={{ patroni_main_ip }} --port={{ psql_port }} --vip={{ patroni_vip }} --endpoint=http://{{ patroni_main_ip }}:{{ etcd_client_port }} {{ psql_major_version }} {{ psql_cluster_name }}
 
 - name: systemctl daemon-reload / start patroni
   systemd:

@@ -24,8 +24,8 @@
 
 - name: Store array of Patroni main IPv4 addresses
   ansible.builtin.set_fact:
-    patroni_ips: "{{ patroni_ips | default([])+ [hostvars[item]['patroni_main_ip'] }}"
-  with_items: "{{ groups['patroni_hosts'] }}"
+    patroni_ips: "{{ patroni_ips | default([])+ [hostvars[item]['patroni_main_ip']] }}"
+  loop: "{{ patroni_hosts }}"
   when: patroni_ips is not defined
 
 - name: Ensure VIP address is defined
@@ -46,3 +46,13 @@
   fail:
     msg: "Array of other patroni hosts does not have one element less! Got: {{ other_patroni_hosts }}"
   when: other_patroni_hosts | length != patroni_hosts | length - 1
+
+# UFW rules
+- name: Allow DCS/PSQL/Patroni ports from other hosts
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    src: "{{ hostvars[item]['patroni_main_ip'] }}"
+    port: "{{ etcd_client_port }},{{ etcd_peer_port }},{{ psql_port }},{{ patroni_port }}"
+    comment: "{{ hostvars[item]['ansible_hostname'] }}"
+  loop: "{{ other_patroni_hosts }}"

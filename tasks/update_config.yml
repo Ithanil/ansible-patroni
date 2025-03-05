@@ -1,0 +1,8 @@
+- name: Apply postgresql parameters
+  ansible.builtin.shell: patronictl -c /etc/patroni/15-main.yml edit-config --force --pg {{ item.key }}="{{ item.value }}"
+  loop: "{{ psql_parameters | dict2items }}"
+  when: psql_parameters and inventory_hostname == patroni_hosts[0]
+  register: param_diffs
+
+- debug: "msg={{ param_diffs.results | map(attribute='stdout') | join('\n') }}"
+  when: psql_parameters and inventory_hostname == patroni_hosts[0]

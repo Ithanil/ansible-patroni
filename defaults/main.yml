@@ -19,9 +19,30 @@ patroni_rewind_pass: "postgres_rewind"
 # The Patroni REST port
 patroni_port: 8008
 
-# *At least* these variables need to be set in your inventory!
+# REQUIRED INVENTORY VARIABLES
 #patroni_hosts:
 # - "inventory_name1"
 # - "inventory_name2"
 #...
 #patroni_vip: # "10.0.0.1"
+
+# OPTIONAL INVENTORY VARIABLES
+# required by the configuration tasks,
+# which can be used to adjust the
+# config after initial setup
+
+psql_parameters: {}
+#  "max_connections": "200"
+
+patroni_tags: {}
+#  "inventory_name1":
+#     "failover_priority": 2
+#  "inventory_name2":
+#     "nofailover": true
+
+psql_clients: {}
+#  "client_name1":
+#    ip: "1.2.3.4"
+#    db: "db1" # defaults to all
+#    user: "user1" # defaults to all
+#    auth_method: "scram-sha-256" # defaults to md5

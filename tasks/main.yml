@@ -12,7 +12,7 @@
 - name: Determine if no postgres runs on any host
   ansible.builtin.set_fact:
     skip_patroni_setup: true
-  when: hostvars[item]['pids_of_postgres'].stdout|default([])|length>0
+  when: hostvars[item]['pids_of_postgres'].pids|default([])|length>0
   loop: "{{ patroni_hosts }}"
 
 - name: Print reason for stop

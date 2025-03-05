@@ -1,16 +1,3 @@
-- name: Install generally useful packages
-  package:
-    name:
-      - tree
-      - vim
-      - less
-      - screen
-      - htop
-      - ssl-cert
-      - net-tools
-      - gnupg
-    state: present
-
 - name: Install postgresql-common
   package:
     name: postgresql-common
@@ -29,11 +16,3 @@
       - "postgresql-contrib-{{ postgresql_major_version }}"
       - "postgresql-client-{{ postgresql_major_version }}"
     state: present
-
-- name: Copy pgpass from template
-  template:
-    src: templates/postgres_pgpass
-    dest: /var/lib/postgresql/.pgpass
-    mode: 0600
-    owner: "postgres"
-    group: "postgres"

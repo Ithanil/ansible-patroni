@@ -10,12 +10,6 @@ postgresql_port: "5432"
 #postgresql_data_dir_base: "/var/lib/postgresql"
 patroni_replication_user: "replicator"
 patroni_replication_pass: "replicator"
-# Password for the postgres superuser. Usually setting a password is
-# discouraged, and socket-based peer authentication to the local postgres
-# instance should be used instead. However, patroni_postgres_pass needs to be
-# set on PostgresSQL 10 and earlier if pg_rewind is to be used to get diverged
-# former primaries back online without a full re-clone.
-patroni_postgres_pass: ""
 # from Postgresql 11, pg_rewind can use a regular user with the appropriate
 # fine-grained permissions. If set, Patroni will setup the user and its
 # permissions. Note: "pg_rewind" is a reserved role and cannot be used.
@@ -24,7 +18,7 @@ patroni_rewind_pass: "postgres_rewind"
 # The Patroni REST port
 patroni_port: 8008
 
-# At least these variables need to be set in your inventory!
+# *At least* these variables need to be set in your inventory!
 patroni_hosts:
 # - "hostname1"
 # - "hostname2"

@@ -64,11 +64,15 @@ bootstrap:
       - local   all             all                                     peer
       - host    all             all             127.0.0.1/32            md5
       - host    all             all             ::1/128                 md5
-      - host    all             all             @NETWORK@               md5
+{% for host in vars['patroni_hosts'] %}
+      - host    all             all             {{ hostvars[host]['patroni_main_ip'] }}/32 md5
+{% endfor %}
       - local   replication     all                                     peer
       - host    replication     all             127.0.0.1/32            md5
       - host    replication     all             ::1/128                 md5
-      - host    replication     all             @NETWORK@               md5
+{% for host in vars['patroni_hosts'] %}
+      - host    replication     all             {{ hostvars[host]['patroni_main_ip'] }}/32 md5
+{% endfor %}
 #  # Some possibly desired options for 'initdb'
 #  initdb:  # Note: It needs to be a list (some options need values, others are switches)
 #  - encoding: UTF8

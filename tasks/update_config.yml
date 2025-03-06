@@ -26,3 +26,24 @@
 - debug:
     msg: "{{ hba_diffs.stdout }}"
   when: inventory_hostname == patroni_hosts[0]
+
+- name: Update tags
+  ansible.builtin.blockinfile:
+    path: "/etc/patroni/{{ psql_major_version }}-{{ psql_cluster_name }}.yml"
+    insertafter: "EOF"
+    block: |
+      {% if item.value|length > 0 %}
+      tags:
+        {% for tag in item.value|dict2items %}
+        {{ tag.key }}: {{ tag.value }}
+        {% endfor %}
+      {% endif %}
+  loop: "{{ lookup('ansible.builtin.dict', patroni_tags) }}"
+  when: inventory_hostname in item.key
+  register: result
+
+- name: Restart Patroni service if tags changed
+  ansible.builtin.systemd_service:
+    name: patroni@{{ psql_major_version }}-{{ psql_cluster_name }}
+    state: restarted
+  when: result.changed

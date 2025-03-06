@@ -53,6 +53,16 @@
     state: restarted
     enabled: yes
 
+- name: Stop&disable default vip-manager service
+  systemd:
+    name: vip-manager
+    state: stopped
+    enabled: no
+
+- name: Cleanup failed state
+  ansible.builtin.command:
+    cmd: systemctl reset-failed vip-manager
+
 - name: systemctl daemon-reload / start vip-manager
   systemd:
     daemon_reload: yes

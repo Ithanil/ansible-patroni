@@ -47,16 +47,7 @@ bootstrap:
       # The following parameters are given as command line options
       # overriding the settings in postgresql.conf.
       parameters:
-#        wal_level: hot_standby
-#        hot_standby: "on"
-#        wal_keep_segments: 8
-#        max_wal_senders: 10
-#        max_replication_slots: 10
-#        max_worker_processes = 8
-#        wal_log_hints: "on"
-#        track_commit_timestamp = "off"
-#      recovery_conf:
-#        restore_command: cp ../wal_archive/%f %p
+{% include 'templates/psql_parameters_base.j2' %}
       # Set pg_hba.conf to the following values after bootstrapping or cloning.
       # If you want to allow regular connections from the local network, or
       # want to use pg_rewind, you need to uncomment the fourth entry.

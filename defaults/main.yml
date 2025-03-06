@@ -31,18 +31,21 @@ patroni_port: 8008
 # which can be used to adjust the
 # config after initial setup
 
-psql_parameters: {}
-#  "max_connections": "200"
-
-patroni_tags: {}
-#  "inventory_name1":
-#     "failover_priority": 2
-#  "inventory_name2":
-#     "nofailover": true
-
 psql_clients: {}
 #  "client_name1":
 #    ip: "1.2.3.4"
 #    db: "db1" # defaults to all
 #    user: "user1" # defaults to all
 #    auth_method: "scram-sha-256" # defaults to md5
+
+psql_parameters: {}
+#  "max_connections": "200"
+
+patroni_settings: {}
+#  "postgresql.use_pg_rewind": false
+
+patroni_tags: {}
+#  "inventory_name1":
+#     "failover_priority": 2
+#  "inventory_name2":
+#     "nofailover": true

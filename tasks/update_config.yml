@@ -66,7 +66,7 @@
         {{ tag.key }}: {{ tag.value }}
         {% endfor %}
       {% endif %}
-  loop: "{{ lookup('ansible.builtin.dict', patroni_tags) }}"
+  loop: "{{ query('ansible.builtin.dict', patroni_tags) }}"
   when: inventory_hostname in item.key
   register: result
 

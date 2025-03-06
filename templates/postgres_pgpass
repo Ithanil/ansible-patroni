@@ -1,1 +1,0 @@
-*:*:*:postgres:{{ patroni_postgres_pass }}

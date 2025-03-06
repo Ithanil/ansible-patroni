@@ -24,9 +24,8 @@
 
 - name: Store array of Patroni main IPv4 addresses
   ansible.builtin.set_fact:
-    patroni_ips: "{{ patroni_ips | default([])+ [hostvars[item]['patroni_main_ip']] }}"
+    patroni_ips: "{{ patroni_ips | default([]) + [hostvars[item]['patroni_main_ip']] }}"
   loop: "{{ patroni_hosts }}"
-  when: patroni_ips is not defined
 
 - name: Ensure VIP address is defined
   fail:

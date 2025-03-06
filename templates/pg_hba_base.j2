@@ -1,17 +1,17 @@
-    - local   all             all                                     peer
-    - host    all             all             127.0.0.1/32            md5
-    - host    all             all             ::1/128                 md5
+      - local   all             all                                     peer
+      - host    all             all             127.0.0.1/32            md5
+      - host    all             all             ::1/128                 md5
 {% for host in vars['patroni_hosts'] %}
-    - host    all             all             {{ hostvars[host]['patroni_main_ip'] }}/32 md5
+      - host    all             all             {{ hostvars[host]['patroni_main_ip'] }}/32 md5
 {% endfor %}
-    - local   replication     all                                     peer
-    - host    replication     all             127.0.0.1/32            md5
-    - host    replication     all             ::1/128                 md5
+      - local   replication     all                                     peer
+      - host    replication     all             127.0.0.1/32            md5
+      - host    replication     all             ::1/128                 md5
 {% for host in vars['patroni_hosts'] %}
-    - host    replication     all             {{ hostvars[host]['patroni_main_ip'] }}/32 md5
+      - host    replication     all             {{ hostvars[host]['patroni_main_ip'] }}/32 md5
 {% endfor %}
 {% for item in vars['psql_clients']|dict2items %}
 {% if (item.value['ip'] is defined) and (item.value['ip']|length > 0) %}
-    - host    {{ item.value['db']|default('all') }} {{ item.value['user']|default('all') }} {{ item.value['ip'] }} {{ item.value['auth_method']|default('md5') }}
+      - host    {{ item.value['db']|default('all') }} {{ item.value['user']|default('all') }} {{ item.value['ip'] }} {{ item.value['auth_method']|default('md5') }}
 {% endif %}
 {% endfor %}

@@ -1,0 +1,8 @@
+- name: Determine if host has the VIP
+  ansible.builtin.set_fact:
+    is_patroni_leader: true
+  when: ansible_all_ipv4_addresses is contains(patroni_vip)
+
+- debug:
+    msg: "{{ inventory_hostname }} is leader"
+  when: is_patroni_leader|default(False)

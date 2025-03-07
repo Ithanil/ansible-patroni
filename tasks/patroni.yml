@@ -60,8 +60,8 @@
     enabled: no
 
 - name: Cleanup failed state
-  ansible.builtin.command:
-    cmd: systemctl reset-failed vip-manager
+  ansible.builtin.shell:
+    cmd: systemctl reset-failed vip-manager || /bin/true
 
 - name: systemctl daemon-reload / start vip-manager
   systemd:

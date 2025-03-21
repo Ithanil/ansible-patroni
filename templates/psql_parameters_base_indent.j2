@@ -1,0 +1,3 @@
+{% for item in vars['psql_parameters']|dict2items %}
+        "{{ item.key }}": "{{ item.value }}"
+{% endfor %}

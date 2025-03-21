@@ -47,7 +47,7 @@ bootstrap:
       # The following parameters are given as command line options
       # overriding the settings in postgresql.conf.
       parameters:
-{% include 'templates/psql_parameters_base.j2' %}
+{% include 'templates/psql_parameters_base_indent.j2' %}
       # Set pg_hba.conf to the following values after bootstrapping or cloning.
       # If you want to allow regular connections from the local network, or
       # want to use pg_rewind, you need to uncomment the fourth entry.

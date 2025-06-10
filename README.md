@@ -28,6 +28,7 @@ patroni_hosts:
 Note that these names are meant to be the inventory names, not the hostnames necessarily.
 
 Furthermore, you need to specify in `patroni_vip` the virtual IP to be used. All other options are basically optional.
+When specifying `psql_clients`, note that you **must** include netmasks with your IP adresses (e.g. `ip: "1.2.3.4/32"`).
 
 Nevertheless, please consider setting the `patroni_replication_pass` and `patroni_rewind_pass` variables, because the role uses placeholders as defaults.
 If you don't want to store the passwords in plaintext in your ansible repository, consider using ansible-vault. You could vault a new password like so:

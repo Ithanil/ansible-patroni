@@ -33,7 +33,7 @@ patroni_port: 8008
 
 psql_clients: {}
 #  "client_name1":
-#    ip: "1.2.3.4"
+#    ip: "1.2.3.4/32"
 #    db: "db1" # defaults to all
 #    user: "user1" # defaults to all
 #    auth_method: "scram-sha-256" # defaults to md5
